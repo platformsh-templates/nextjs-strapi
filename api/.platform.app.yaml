@@ -15,7 +15,10 @@ build:
 
 variables:
   env:
-    FIRST_DEPLOY_FILE: 'deploy/platformsh.installed'
+    DEMO_DEPLOY_DIR: 'deploy'
+    DEMO_DEPLOY_FILE: 'platformsh.installed'
+    DEMO_DATA_TAR: 'foodadvisor.tar.gz'
+    DEMO_DATA_FILE: 'foodadvisor.sql'
 
 # Build dependencies.
 dependencies:
@@ -29,13 +32,17 @@ hooks:
     yarn --frozen-lockfile
     yarn build
   deploy: |
-    if [ -f "$FIRST_DEPLOY_FILE" ]; then
-        printf "\nFoodadvisor demo already initialized. Skipping.\n"
+    if [ -f "$DEMO_DEPLOY_DIR/$DEMO_DEPLOY_FILE" ]; then
+        printf "\nFoodadvisor demo already initialized. Skipping setup.\n"
+        if [ -f "$DEMO_DEPLOY_DIR/$DEMO_DATA_FILE" ]; then
+            printf "\nCleaning up DB dump file to save disk.\n"
+            rm $DEMO_DEPLOY_DIR/$DEMO_DATA_FILE
+        fi
     else
-      # Unpack demo data
-      tar -xf foodadvisor.tar.gz
-
-      touch $FIRST_DEPLOY_FILE
+      # Setup and track the demo.
+      tar -xf $DEMO_DATA_TAR
+      # mysql -h $host -P $port -u $user $path -p $pw < $DEMO_DEPLOY_DIR/$DEMO_DATA_FILE
+      # touch $DEMO_DEPLOY_DIR/$DEMO_DEPLOY_FILE
     fi
 
 # The relationships of the application with services or other applications.
@@ -43,7 +50,7 @@ hooks:
 # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
 # side is in the form `<service name>:<endpoint name>`.
 relationships:
-  mysqldatabase: "dbmysql:mysql"
+  database: "dbmysql:mysql"
 
 # The configuration of app when it is exposed to the web.
 web:
