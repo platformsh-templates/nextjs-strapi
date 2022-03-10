@@ -3,9 +3,9 @@ export API_TOKEN_SALT="$PLATFORM_PROJECT_ENTROPY"
 export STRAPI_ADMIN_CLIENT_URL=http://localhost:3000
 export STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=mysecret
 
-export DB_CREDENTIALS=$(echo $PLATFORM_RELATIONSHIPS | base64 --decode | jq '.database[0]')
-export DB_HOST=$(echo $DB_CREDENTIALS | jq -r '.host')
-export DB_PORT=$(echo $DB_CREDENTIALS | jq -r '.port')
-export DB_USER=$(echo $DB_CREDENTIALS | jq -r '.username')
-export DB_PW=$(echo $DB_CREDENTIALS | jq -r '.password')
-export DB_PATH=$(echo $DB_CREDENTIALS | jq -r '.path')
+# export DB_CREDENTIALS=$(echo $PLATFORM_RELATIONSHIPS | base64 --decode | jq '.database[0]')
+# export DB_HOST=$(echo $DB_CREDENTIALS | jq -r '.host')
+# export DB_PORT=$(echo $DB_CREDENTIALS | jq -r '.port')
+# export DB_USER=$(echo $DB_CREDENTIALS | jq -r '.username')
+# export DB_PW=$(echo $DB_CREDENTIALS | jq -r '.password')
+# export DB_PATH=$(echo $DB_CREDENTIALS | jq -r '.path')

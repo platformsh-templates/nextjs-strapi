@@ -41,6 +41,14 @@ hooks:
     else
       # Setup and track the demo.
       tar -xf $DEMO_DATA_TAR
+
+      DB_CREDENTIALS=$(echo $PLATFORM_RELATIONSHIPS | base64 --decode | jq '.database[0]')
+      DB_HOST=$(echo $DB_CREDENTIALS | jq -r '.host')
+      DB_PORT=$(echo $DB_CREDENTIALS | jq -r '.port')
+      DB_USER=$(echo $DB_CREDENTIALS | jq -r '.username')
+      DB_PW=$(echo $DB_CREDENTIALS | jq -r '.password')
+      DB_PATH=$(echo $DB_CREDENTIALS | jq -r '.path')
+
       mysql -h $DB_HOST -P $DB_PORT -u $DB_USER --password=$DB_PW $DB_PATH < $DEMO_DEPLOY_DIR/$DEMO_DATA_FILE
       # touch $DEMO_DEPLOY_DIR/$DEMO_DEPLOY_FILE
     fi
