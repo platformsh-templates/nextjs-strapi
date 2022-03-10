@@ -25,6 +25,10 @@ dependencies:
   nodejs:
     yarn: "1.22.5"
 
+variables:
+    env:
+        FOO: 'BAR'
+
 # The hooks executed at various points in the lifecycle of the application.
 hooks:
   build: |
