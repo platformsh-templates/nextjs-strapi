@@ -88,7 +88,7 @@ Nulla luctus elit volutpat, lacinia arcu quis, blandit sem. Proin malesuada risu
 
 ## Getting started
 
-### Using this template
+### Deploy
 
 #### Quickstart
 
@@ -104,7 +104,7 @@ The quickest way to deploy this template on Platform.sh is by clicking the butto
 >
 > If you do not already have a Platform.sh account, you will be asked to fill out some basic information, after which you will be given a 30-day free trial to experiment with our platform.
 
-#### Deployment options
+#### Other deployment options
 
 <details>
 <summary>Deploy directly to Platform.sh from the command line</summary><br />
@@ -153,11 +153,11 @@ If you would instead to deploy this template from your own repository on GitHub,
 </details>
 
 <details>
-<summary><strong>Deploy from GitLab</strong></summary><br />
+<summary>Deploy from GitLab</summary><br />
 </details>
 
 <details>
-<summary><strong>Deploy from Bitbucket</strong></summary><br />
+<summary>Deploy from Bitbucket</summary><br />
 </details>
 
 ### Post-install
@@ -166,32 +166,7 @@ This demo repository is set up to deploy both front and backend application cont
 
 To login to the Strapi Admin UI, you can use the credentials `admin@example.com/Admin1234` to start, after which you are free to update them at `https://api.GENERATED_URL/admin/me`.
 
-## Customizations
-
-The following changes have been made relative to the [Strapi Foodadvisor official demo](https://github.com/strapi/foodadvisor) to run on Platform.sh. If using this project as a reference for your own existing project, replicate the changes below to your project.
-
-## Shared files
-
-- The upstream `README.md` was renamed, and this Platform.sh-specific README was committed in its place.
-- `.platform/services.yaml`, and `.platform/routes.yaml` files have been added. These provide Platform.sh-specific configuration for provisioning an Oracle MySQL container and for defining how traffic is handled between the two application containers, respectively. They are present in all projects on Platform.sh, and you may customize them as you see fit.
-
-
-## Strapi customizations (`api`)
-
-- `http:/*` was added to `.gitignore`, as this directory was sometimes generated during local development.
-- The `mysql` dependency was added, so as to connect to the database service on Platform.sh.
-- A zipped file (`api/foodadvisor.tar.gz`) was added, which contains a database dump and a collection of demo images used in the original Foodadvisor demo, altered to work with Oracle MySQL. It is used on the first deployment within the Strapi deploy hook to set up the database. You are free to delete this file after this demo has been deployed.
-- A `api/.platform.app.yaml` file has been added, which is required to define the build and deploy process for all application containers on Platform.sh. It is set to run Strapi if production mode across all environments, so you will need to clone the repository (`platform get PROJECT_ID`) local and run a development server in order to add new collections.
-- A `api/config/database.js` file has been added, which does two things. First, it reads from Platform.sh environment variables to detect the database service connected to the `database` relationship in `api/.platform.app.yaml`. In this case, that's Oracle MySQL, and it uses credentials provided in the `PLATFORM_RELATIONSHIPS` environment variable to connect to that service. Second, it detects whether or not Strapi is actually running on Platform.sh, and makes accomodations to run Strapi locally depending on if an SSH tunnel has been opened to a database running on an active Platform.sh environment. 
-- A `.environment` file has been added. This file is sourced on a Platform.sh environment during startup, at the beginning of the deploy hook, and whenever you SSH into the environment (`platform ssh -e ENVIRONMENT_ID`). It initializes environment variables specific to this demo, such as Strapi security tokens, relevant Next.js frontend URLs, and defines database credential aliases used during the deploy hook. 
-- There is an [open issue](https://github.com/strapi/strapi/issues/12101) where Strapi rejects collections with names that are too long, so the demo has been altered slightly (the collection `name` within `api/src/components/blocks/related-restaurants.json` has been shortened) for this demo repo.
-
-## Next.js customizations (`client`)
-
-- A `.environment` file has been added. This file is sourced on a Platform.sh environment during startup, at the beginning of the deploy hook, and whenever you SSH into the environment (`platform ssh -e ENVIRONMENT_ID`). It initializes environment variables specific to this demo, specifically the backend Strapi url for the current environment. You will need to replicate these commands to run Next.js locally, so see the [Local development](#local-development) section for more details. 
-- A `client/.platform.app.yaml` file has been added, which is required to define the build and deploy process for all application containers on Platform.sh. Because of how Platform.sh works, the Next.js build is delayed considerably to the `post_deploy` hook after the Strapi container has fully deployed and has begun serving its endpoints. 
-
-## Local development
+### Local development
 
 In all cases, it's important to develop on an isolated environment - do not open SSH tunnels to your production environment when developing locally. Each of the options below assume the following starting point:
 
@@ -205,66 +180,96 @@ platform environment:branch updates
 >
 > For many of the steps below, you may need to include the CLI flags `-p PROJECT_ID` and `-e ENVIRONMENT_ID` if you are not in the project directory or if the environment is associated with an existing pull request.
 
-### Running the Strapi backend
-
-```bash
-# Open a SSH tunnel to the environment's database.
-platform tunnel:open -A strapi
-
-# Mock environment variable that contains service credentials. 
-export PLATFORM_RELATIONSHIPS="$(platform tunnel:info -A strapi --encode)"
-
-# Pull public/uploads files from the environment.
-cd api
-platform mount:download -A strapi -m public/uploads --target public/uploads -y
-
-# Build Strapi and start the server.
-yarn --frozen-lockfile
-yarn develop
-```
-
-Strapi will then serve on `localhost:1337` using a live service on the isolated Platform.sh environment.
-
-### Running the Next.js frontend
-
-You have two options when running Next.js locally. You can connect to a Strapi instance on an active Platform.sh environment, or run Strapi locally in parallel and connect to that.
-
-1. **Option 1:** Connecting to Strapi on a Platform.sh environment:
-
-    > **Requirements:**
-    >
-    > In order to retrieve the backend url within live environment from environment variables, this demo uses [jq](https://stedolan.github.io/jq/manual/v1.6/) - the JSON filtering command line tool. jq comes pre-installed on all Platform.sh runtime containers, and in order to replicate the behavior described below and build Next.js locally, you will need to also have it [installed on your system](https://stedolan.github.io/jq/download/). 
+<details>
+<summary>Running the Strapi backend</summary><br />
 
     ```bash
-    cd client
+    # Open a SSH tunnel to the environment's database.
+    platform tunnel:open -A strapi
 
-    # Get the live backend Strapi url (note the 'id' attribute defined in .platform/routes.yaml).
-    BACKEND_URL=$(platform ssh 'echo $PLATFORM_ROUTES | base64 --decode' -A nextjs -q | jq -r 'to_entries[] | select (.value.id == "api") | .key')
+    # Mock environment variable that contains service credentials. 
+    export PLATFORM_RELATIONSHIPS="$(platform tunnel:info -A strapi --encode)"
 
-    # Get the preview secret.
-    PREVIEW_SECRET=$(platform ssh 'echo $PLATFORM_PROJECT-$PLATFORM_BRANCH' -A nextjs -q)
+    # Pull public/uploads files from the environment.
+    cd api
+    platform mount:download -A strapi -m public/uploads --target public/uploads -y
 
-    # Output to .env.development.
-    printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env.local
-
-    # Build and run the Next.js server.
+    # Build Strapi and start the server.
     yarn --frozen-lockfile
-    yarn dev
+    yarn develop
     ```
 
-2. **Option 2:** Connecting to a locally running Strapi development server
+    Strapi will then serve on `localhost:1337` using a live service on the isolated Platform.sh environment.
 
-    This demo assumes a locally running Strapi instance by default, so once you have followed the [steps above](#strapi) you will be able to start the Next.js development server normally.
+</details>
 
-    ```bash
-    # Build and run the Next.js server.
-    cd client
-    yarn --frozen-lockfile
-    yarn dev
-    ```
+<details>
+<summary>Running the Next.js frontend</summary><br />
 
-    Next.js will be served from `localhost:3000` pulling data from a local Strapi instance running at `localhost:1337`.
+    You have two options when running Next.js locally. You can connect to a Strapi instance on an active Platform.sh environment, or run Strapi locally in parallel and connect to that.
 
+    1. **Option 1:** Connecting to Strapi on a Platform.sh environment:
+
+        > **Requirements:**
+        >
+        > In order to retrieve the backend url within live environment from environment variables, this demo uses [jq](https://stedolan.github.io/jq/manual/v1.6/) - the JSON filtering command line tool. jq comes pre-installed on all Platform.sh runtime containers, and in order to replicate the behavior described below and build Next.js locally, you will need to also have it [installed on your system](https://stedolan.github.io/jq/download/). 
+
+        ```bash
+        cd client
+
+        # Get the live backend Strapi url (note the 'id' attribute defined in .platform/routes.yaml).
+        BACKEND_URL=$(platform ssh 'echo $PLATFORM_ROUTES | base64 --decode' -A nextjs -q | jq -r 'to_entries[] | select (.value.id == "api") | .key')
+
+        # Get the preview secret.
+        PREVIEW_SECRET=$(platform ssh 'echo $PLATFORM_PROJECT-$PLATFORM_BRANCH' -A nextjs -q)
+
+        # Output to .env.development.
+        printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env.local
+
+        # Build and run the Next.js server.
+        yarn --frozen-lockfile
+        yarn dev
+        ```
+
+    2. **Option 2:** Connecting to a locally running Strapi development server
+
+        This demo assumes a locally running Strapi instance by default, so once you have followed the [steps above](#strapi) you will be able to start the Next.js development server normally.
+
+        ```bash
+        # Build and run the Next.js server.
+        cd client
+        yarn --frozen-lockfile
+        yarn dev
+        ```
+
+        Next.js will be served from `localhost:3000` pulling data from a local Strapi instance running at `localhost:1337`.
+
+</details>
+
+## Customizations
+
+The following changes have been made relative to the [Strapi Foodadvisor official demo](https://github.com/strapi/foodadvisor) to run on Platform.sh. If using this project as a reference for your own existing project, replicate the changes below to your project.
+
+### Shared files
+
+- The upstream `README.md` was renamed, and this Platform.sh-specific README was committed in its place.
+- `.platform/services.yaml`, and `.platform/routes.yaml` files have been added. These provide Platform.sh-specific configuration for provisioning an Oracle MySQL container and for defining how traffic is handled between the two application containers, respectively. They are present in all projects on Platform.sh, and you may customize them as you see fit.
+
+
+### Strapi customizations (`api`)
+
+- `http:/*` was added to `.gitignore`, as this directory was sometimes generated during local development.
+- The `mysql` dependency was added, so as to connect to the database service on Platform.sh.
+- A zipped file (`api/foodadvisor.tar.gz`) was added, which contains a database dump and a collection of demo images used in the original Foodadvisor demo, altered to work with Oracle MySQL. It is used on the first deployment within the Strapi deploy hook to set up the database. You are free to delete this file after this demo has been deployed.
+- A `api/.platform.app.yaml` file has been added, which is required to define the build and deploy process for all application containers on Platform.sh. It is set to run Strapi if production mode across all environments, so you will need to clone the repository (`platform get PROJECT_ID`) local and run a development server in order to add new collections.
+- A `api/config/database.js` file has been added, which does two things. First, it reads from Platform.sh environment variables to detect the database service connected to the `database` relationship in `api/.platform.app.yaml`. In this case, that's Oracle MySQL, and it uses credentials provided in the `PLATFORM_RELATIONSHIPS` environment variable to connect to that service. Second, it detects whether or not Strapi is actually running on Platform.sh, and makes accomodations to run Strapi locally depending on if an SSH tunnel has been opened to a database running on an active Platform.sh environment. 
+- A `.environment` file has been added. This file is sourced on a Platform.sh environment during startup, at the beginning of the deploy hook, and whenever you SSH into the environment (`platform ssh -e ENVIRONMENT_ID`). It initializes environment variables specific to this demo, such as Strapi security tokens, relevant Next.js frontend URLs, and defines database credential aliases used during the deploy hook. 
+- There is an [open issue](https://github.com/strapi/strapi/issues/12101) where Strapi rejects collections with names that are too long, so the demo has been altered slightly (the collection `name` within `api/src/components/blocks/related-restaurants.json` has been shortened) for this demo repo.
+
+### Next.js customizations (`client`)
+
+- A `.environment` file has been added. This file is sourced on a Platform.sh environment during startup, at the beginning of the deploy hook, and whenever you SSH into the environment (`platform ssh -e ENVIRONMENT_ID`). It initializes environment variables specific to this demo, specifically the backend Strapi url for the current environment. You will need to replicate these commands to run Next.js locally, so see the [Local development](#local-development) section for more details. 
+- A `client/.platform.app.yaml` file has been added, which is required to define the build and deploy process for all application containers on Platform.sh. Because of how Platform.sh works, the Next.js build is delayed considerably to the `post_deploy` hook after the Strapi container has fully deployed and has begun serving its endpoints. 
 
 ## License
 
