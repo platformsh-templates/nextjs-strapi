@@ -1,88 +1,90 @@
-# FoodAdvisor - Strapi Demo
+# Next.js + Strapi demo for Platform.sh
 
-![FoodAdvisor](./foodadvisor.png)
+<p align="center">
+<a href="https://console.platform.sh/projects/create-project?template=https://raw.githubusercontent.com/platformsh/template-builder/master/templates/nextjs-strapi/.platform.template.yaml&utm_content=nextjs-strapi&utm_source=github&utm_medium=button&utm_campaign=deploy_on_platform">
+    <img src="https://platform.sh/images/deploy/lg-blue.svg" alt="Deploy on Platform.sh" width="180px" />
+</a>
+</p>
 
-Welcome to FoodAdvisor, the official Strapi demo application.
-This repository contains the following:
+Lorem ipsum
 
-- Strapi project with existing Content-types and data (`/api`)
-- Next.js client ready to fetch the content of the Strapi application (`/client`)
+## Features
 
-[![Open in Gitpod](https://camo.githubusercontent.com/76e60919474807718793857d8eb615e7a50b18b04050577e5a35c19421f260a3/68747470733a2f2f676974706f642e696f2f627574746f6e2f6f70656e2d696e2d676974706f642e737667)](http://gitpod.io/#https://github.com/strapi/foodadvisor)
+## Post-install
 
-## Get started
+## Customizations 
 
-You can get started with this project locally on your machine by following the instructions below or you can [request a private instance on our website](https://strapi.io/demo).
+## Local development
 
-## Prerequisites
+In all cases, it's important to develop on an isolated environment, and each of the options below assume the following starting point:
 
-Be sure to have the correct env variables for each part:
-
-- Strapi (example in `./api/.env.example`):
-  - `STRAPI_ADMIN_CLIENT_URL=<url-of-nextjs>`
-  - `STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=<a-random-token>`
-
-- Next.js (already in `./client/.env.development`):
-  - `NEXT_PUBLIC_API_URL=<url-of-strapi>`
-  - `PREVIEW_SECRET=<the-same-random-token-as-for-strapi>`
-
-## 1. Clone FoodAdvisor
-
-- Clone the repository by running the following command:
-
-```
-git clone https://github.com/strapi/foodadvisor.git
+```bash
+platform get PROJECT_ID
+cd project-name
+platform environment:branch updates
 ```
 
-- Navigate to your project folder by running `cd foodadvisor`.
+> **Note:**
+>
+> You will need to include the CLI flags `-p PROJECT_ID` and `-e ENVIRONMENT_ID` if you are not in the project directory or if the environment is associated with an existing pull request.
 
-## 2. Start Strapi
+### Strapi
 
-Navigate to your `./my-projects/foodadvisor/api` folder by running `cd api` from your command line.
+```bash
+# Open a SSH tunnel to the environment's database.
+platform tunnel:open -A strapi
 
-- Run the following command in your `./foodadvisor/api` folder:
+# Mock environment variable that contains service credentials. 
+export PLATFORM_RELATIONSHIPS="$(platform tunnel:info -A strapi --encode)"
 
-```
-yarn && yarn seed && yarn develop
-```
+# Pull public/uploads files from the environment.
+cd api
+platform mount:download -A strapi -m public/uploads --target public/uploads -y
 
-This will install the dependencies, fill your application with data and run your server. You can run these commands separately.
-
-## 3. Start Next.js
-
-Navigate to your `./my-projects/foodadvisor/client` folder by running `cd client` from your command line.
-
-- Run the following command in your `./foodadvisor/client` folder
-
-```
-yarn && yarn dev
+# Build Strapi and start the server.
+yarn --frozen-lockfile
+yarn develop
 ```
 
-This will install the dependencies, and run your server. You can run these commands separately.
+Strapi will then serve on `localhost:1337` using a live service on the isolated Platform.sh environment.
 
-## Features overview
+### Next.js
 
-### User
+1. Pulling data from Strapi on a Platform.sh environment:
 
-<br />
+    > **Requirements:**
+    >
+    > In order to retrieve the backend url within live environment from environment variables, this demo uses [jq](https://stedolan.github.io/jq/manual/v1.6/) - the JSON filtering command line tool. jq comes pre-installed on all Platform.sh runtime containers, and in order to replicate the behavior described below and build Next.js locally, you will need to also have it [installed on your system](https://stedolan.github.io/jq/download/). 
 
-**An intuitive, minimal editor** The editor allows you to pull in dynamic blocks of content. It’s 100% open-source, and it’s fully extensible.<br />
-**Media Library** Upload images, video or any files and crop and optimize their sizes, without quality loss.<br />
-**Flexible content management** Build any type of category, section, format or flow to adapt to your needs. <br />
-**Sort and Filter** Built-in sorting and filtering: you can manage thousands of entries without effort.<br />
-**User-friendly interface** The most user-friendly open-source interface on the market.<br />
-**SEO optimized** Easily manage your SEO metadata with a repeatable field and use our Media Library to add captions, notes, and custom filenames to optimize the SEO of media assets.<br /><br />
+    ```bash
+    cd client
 
-### Global
+    # Get the live backend Strapi url (note the 'id' attribute defined in .platform/routes.yaml).
+    BACKEND_URL=$(platform ssh 'echo $PLATFORM_ROUTES | base64 --decode' -p b3sqwzxrtdozm -e pr-3 -A nextjs -q | jq -r 'to_entries[] | select (.value.id == "api") | .key')
 
-<br />
+    # Get the preview secret.
+    PREVIEW_SECRET=$(platform ssh 'echo $PLATFORM_PROJECT-$PLATFORM_BRANCH' -p b3sqwzxrtdozm -e pr-3 -A nextjs -q)
 
-[Customizable API](https://strapi.io/features/customizable-api): Automatically build out the schema, models, controllers for your API from the editor. Get REST or GraphQL API out of the box without writing a single line of code.<br />
-[Media Library](https://strapi.io/features/media-library): The media library allows you to store your images, videos and files in your Strapi admin panel with many ways to visualize and manage them.<br />
-[Role-Based Access Control (RBAC)](https://strapi.io/features/custom-roles-and-permissions): Role-Based Access Control is a feature available in the Administration Panel settings that let your team members have access rights only to the information they need.<br />
-[Internationalization (i18n)](https://strapi.io/features/internationalization): Internationalization (i18n) lets you create many content versions, also called locales, in different languages and for different countries.<br />
+    # Output to .env.development.
+    printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env.development
+
+    # Build and run the Next.js server.
+    cd client
+    yarn --frozen-lockfile
+    yarn dev
+    ```
+
+2. Pulling data from Strapi running locally:
+
+    This demo assumes a locally running Strapi instance by default, so once you have followed the [steps above](#strapi) you will be able to start the Next.js development server normally.
+
+    ```bash
+    # Build and run the Next.js server.
+    cd client
+    yarn --frozen-lockfile
+    yarn dev
+    ```
+
+    Next.js will be served from `localhost:3000` pulling data from a local Strapi instance running at `localhost:1337`.
 
 
-## Resources
-
-[Docs](https://docs.strapi.io) • [Demo](https://strapi.io/demo) • [Starters](https://strapi.io/starters) • [Forum](https://forum.strapi.io/) • [Discord](https://discord.strapi.io) • [Youtube](https://www.youtube.com/c/Strapi/featured) • [Try Enterprise Edition](https://strapi.io/enterprise) • [Strapi Design System](https://design-system.strapi.io/) • [Marketplace](https://market.strapi.io/)
