@@ -43,8 +43,8 @@
 
 <hr>
 <br />
-<h2 align="center"><strong>Contents</strong></h2>
 
+## Contents
 
 - [About this project](#about-this-project)
 - [Features](#features) 
@@ -58,11 +58,9 @@
 - [Resources](#resources)
 - [Contributors](#contributors)
 
-<hr>
-
 ## About this project
 
-This template demonstrates a multi-app deployment on Platform.sh, in this case, a Next.js frontend consuming data from a Strapi backend running on the same environment. It is based on Strapi's official demo repository, [Foodadvisor](https://github.com/strapi/foodadvisor), and is identical to that project aside from a few small modification needed to deploy on Platform.sh. 
+This template demonstrates a multi-app deployment on Platform.sh, in this case, a Next.js frontend consuming data from a Strapi backend running on the same environment. It is based on Strapi's official demo repository, [Foodadvisor](https://github.com/strapi/foodadvisor), and is identical to that project aside from a few small modifications needed to deploy on Platform.sh. 
 
 Next.js is an open-source web framework written for Javascript, and Strapi is a Headless CMS framework written in Node.js.
 
@@ -73,8 +71,8 @@ Next.js is an open-source web framework written for Javascript, and Strapi is a 
 - MySQL 8
 - Automatic TLS certificates
 - Multi-app configuration
+- yarn-based builds
 - Delayed SSG build (post deploy hook)
-- yarn-based build
 
 ## Getting started
 
@@ -221,7 +219,7 @@ You have two options when running Next.js locally. You can connect to a Strapi i
 
 2. **Option 2:** Connecting to a locally running Strapi development server
 
-    This demo assumes a locally running Strapi instance by default, so once you have followed the [steps above](#strapi) you will be able to start the Next.js development server normally.
+    This demo assumes a locally running Strapi instance by default, so once you have followed the steps above for Strapi you will be able to start the Next.js development server normally.
 
     ```bash
     # Build and run the Next.js server.
@@ -238,12 +236,16 @@ You have two options when running Next.js locally. You can connect to a Strapi i
 
 The following changes have been made relative to the [Strapi Foodadvisor official demo](https://github.com/strapi/foodadvisor) to run on Platform.sh. If using this project as a reference for your own existing project, replicate the changes below to your project.
 
-### Shared files
+<details>
+<summary>Shared files</summary><br />
 
 - The upstream `README.md` was renamed, and this Platform.sh-specific README was committed in its place.
 - `.platform/services.yaml`, and `.platform/routes.yaml` files have been added. These provide Platform.sh-specific configuration for provisioning an Oracle MySQL container and for defining how traffic is handled between the two application containers, respectively. They are present in all projects on Platform.sh, and you may customize them as you see fit.
 
-### Strapi customizations (`api`)
+</details>
+
+<details>
+<summary>Strapi customizations (<code>api</code>)</summary><br />
 
 - `http:/*` was added to `.gitignore`, as this directory was sometimes generated during local development.
 - The `mysql` dependency was added, so as to connect to the database service on Platform.sh.
@@ -253,10 +255,15 @@ The following changes have been made relative to the [Strapi Foodadvisor officia
 - A `.environment` file has been added. This file is sourced on a Platform.sh environment during startup, at the beginning of the deploy hook, and whenever you SSH into the environment (`platform ssh -e ENVIRONMENT_ID`). It initializes environment variables specific to this demo, such as Strapi security tokens, relevant Next.js frontend URLs, and defines database credential aliases used during the deploy hook. 
 - There is an [open issue](https://github.com/strapi/strapi/issues/12101) where Strapi rejects collections with names that are too long, so the demo has been altered slightly (the collection `name` within `api/src/components/blocks/related-restaurants.json` has been shortened) for this demo repo.
 
-### Next.js customizations (`client`)
+</details>
+
+<details>
+<summary>Next.js customizations (<code>client</code>)</summary><br />
 
 - A `.environment` file has been added. This file is sourced on a Platform.sh environment during startup, at the beginning of the deploy hook, and whenever you SSH into the environment (`platform ssh -e ENVIRONMENT_ID`). It initializes environment variables specific to this demo, specifically the backend Strapi url for the current environment. You will need to replicate these commands to run Next.js locally, so see the [Local development](#local-development) section for more details. 
 - A `client/.platform.app.yaml` file has been added, which is required to define the build and deploy process for all application containers on Platform.sh. Because of how Platform.sh works, the Next.js build is delayed considerably to the `post_deploy` hook after the Strapi container has fully deployed and has begun serving its endpoints. 
+
+</details>
 
 ## License
 
@@ -311,3 +318,5 @@ See something that's wrong with this template that needs to be fixed? Something 
 - update user name in tar.gz file from Node Workshop
 - template.yaml file
 - plugins?
+- GitLab
+- BitBucket
