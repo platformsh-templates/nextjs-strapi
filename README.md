@@ -117,8 +117,6 @@ If you would instead to deploy this template from your own repository on GitHub,
 
 > **Note:**
 >
-> If you do not already have a Platform.sh account, you will need to [start a free trial](https://accounts.platform.sh/platform/trial/general/setup) before creating a new project. 
->
 > You can find the full [GitHub integration documentation here](https://docs.platform.sh/integrations/source/github.html).
 
 1. Clone this repository:
@@ -183,66 +181,66 @@ platform environment:branch updates
 <details>
 <summary>Running the Strapi backend</summary><br />
 
-    ```bash
-    # Open a SSH tunnel to the environment's database.
-    platform tunnel:open -A strapi
+```bash
+# Open a SSH tunnel to the environment's database.
+platform tunnel:open -A strapi
 
-    # Mock environment variable that contains service credentials. 
-    export PLATFORM_RELATIONSHIPS="$(platform tunnel:info -A strapi --encode)"
+# Mock environment variable that contains service credentials. 
+export PLATFORM_RELATIONSHIPS="$(platform tunnel:info -A strapi --encode)"
 
-    # Pull public/uploads files from the environment.
-    cd api
-    platform mount:download -A strapi -m public/uploads --target public/uploads -y
+# Pull public/uploads files from the environment.
+cd api
+platform mount:download -A strapi -m public/uploads --target public/uploads -y
 
-    # Build Strapi and start the server.
-    yarn --frozen-lockfile
-    yarn develop
-    ```
+# Build Strapi and start the server.
+yarn --frozen-lockfile
+yarn develop
+```
 
-    Strapi will then serve on `localhost:1337` using a live service on the isolated Platform.sh environment.
+Strapi will then serve on `localhost:1337` using a live service on the isolated Platform.sh environment.
 
 </details>
 
 <details>
 <summary>Running the Next.js frontend</summary><br />
 
-    You have two options when running Next.js locally. You can connect to a Strapi instance on an active Platform.sh environment, or run Strapi locally in parallel and connect to that.
+You have two options when running Next.js locally. You can connect to a Strapi instance on an active Platform.sh environment, or run Strapi locally in parallel and connect to that.
 
-    1. **Option 1:** Connecting to Strapi on a Platform.sh environment:
+1. **Option 1:** Connecting to Strapi on a Platform.sh environment:
 
-        > **Requirements:**
-        >
-        > In order to retrieve the backend url within live environment from environment variables, this demo uses [jq](https://stedolan.github.io/jq/manual/v1.6/) - the JSON filtering command line tool. jq comes pre-installed on all Platform.sh runtime containers, and in order to replicate the behavior described below and build Next.js locally, you will need to also have it [installed on your system](https://stedolan.github.io/jq/download/). 
+    > **Requirements:**
+    >
+    > In order to retrieve the backend url within live environment from environment variables, this demo uses [jq](https://stedolan.github.io/jq/manual/v1.6/) - the JSON filtering command line tool. jq comes pre-installed on all Platform.sh runtime containers, and in order to replicate the behavior described below and build Next.js locally, you will need to also have it [installed on your system](https://stedolan.github.io/jq/download/). 
 
-        ```bash
-        cd client
+    ```bash
+    cd client
 
-        # Get the live backend Strapi url (note the 'id' attribute defined in .platform/routes.yaml).
-        BACKEND_URL=$(platform ssh 'echo $PLATFORM_ROUTES | base64 --decode' -A nextjs -q | jq -r 'to_entries[] | select (.value.id == "api") | .key')
+    # Get the live backend Strapi url (note the 'id' attribute defined in .platform/routes.yaml).
+    BACKEND_URL=$(platform ssh 'echo $PLATFORM_ROUTES | base64 --decode' -A nextjs -q | jq -r 'to_entries[] | select (.value.id == "api") | .key')
 
-        # Get the preview secret.
-        PREVIEW_SECRET=$(platform ssh 'echo $PLATFORM_PROJECT-$PLATFORM_BRANCH' -A nextjs -q)
+    # Get the preview secret.
+    PREVIEW_SECRET=$(platform ssh 'echo $PLATFORM_PROJECT-$PLATFORM_BRANCH' -A nextjs -q)
 
-        # Output to .env.development.
-        printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env.local
+    # Output to .env.development.
+    printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env.local
 
-        # Build and run the Next.js server.
-        yarn --frozen-lockfile
-        yarn dev
-        ```
+    # Build and run the Next.js server.
+    yarn --frozen-lockfile
+    yarn dev
+    ```
 
-    2. **Option 2:** Connecting to a locally running Strapi development server
+2. **Option 2:** Connecting to a locally running Strapi development server
 
-        This demo assumes a locally running Strapi instance by default, so once you have followed the [steps above](#strapi) you will be able to start the Next.js development server normally.
+    This demo assumes a locally running Strapi instance by default, so once you have followed the [steps above](#strapi) you will be able to start the Next.js development server normally.
 
-        ```bash
-        # Build and run the Next.js server.
-        cd client
-        yarn --frozen-lockfile
-        yarn dev
-        ```
+    ```bash
+    # Build and run the Next.js server.
+    cd client
+    yarn --frozen-lockfile
+    yarn dev
+    ```
 
-        Next.js will be served from `localhost:3000` pulling data from a local Strapi instance running at `localhost:1337`.
+    Next.js will be served from `localhost:3000` pulling data from a local Strapi instance running at `localhost:1337`.
 
 </details>
 
