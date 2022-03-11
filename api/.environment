@@ -4,7 +4,7 @@ export API_TOKEN_SALT="$PLATFORM_PROJECT_ENTROPY"
 CLIENT_URL=$(echo $PLATFORM_ROUTES | base64 --decode | jq -r 'to_entries[] | select (.value.id == "client") | .key')
 stringlen=${#CLIENT_URL}
 export STRAPI_ADMIN_CLIENT_URL=$(echo $CLIENT_URL | awk -v var=$stringlen '{ string=substr($0, 1, var - 1); print string; }' )
-export STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=${echo "$PLATFORM_PROJECT-$PLATFORM_BRANCH"}
+export STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=$PLATFORM_PROJECT-$PLATFORM_BRANCH
 # Foodadvisor demo variables.
 export DEMO_DEPLOY_DIR='deploy'
 export DEMO_DEPLOY_FILE='platformsh.installed'

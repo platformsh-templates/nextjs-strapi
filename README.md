@@ -66,7 +66,7 @@ Strapi will then serve on `localhost:1337` using a live service on the isolated 
     PREVIEW_SECRET=$(platform ssh 'echo $PLATFORM_PROJECT-$PLATFORM_BRANCH' -A nextjs -q)
 
     # Output to .env.development.
-    printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env.development
+    printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env
 
     # Build and run the Next.js server.
     cd client
