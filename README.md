@@ -11,7 +11,7 @@
     </a>
 </p>
 <br /><br />
-<h1 align="center">Deploying Next.js + Strapi on Platform.sh</h1>
+<h1 align="center">Deploy Next.js and Strapi on Platform.sh</h1>
 
 <p align="center">
     <strong>Contribute to the Platform.sh knowledge base, or check out our resources</strong>
@@ -450,6 +450,4 @@ See something that's wrong with this template that needs to be fixed? Something 
 @todo
 - update user name in tar.gz file from Node Workshop --> Platform.sh Templates
 - plugins?
-- GitLab
-- BitBucket
 - Trailing question mark on title? Dump error?
