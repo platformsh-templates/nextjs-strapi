@@ -90,8 +90,7 @@ Nulla luctus elit volutpat, lacinia arcu quis, blandit sem. Proin malesuada risu
 
 ### Using this template
 
-<details>
-<summary><strong>Quickstart</strong></summary><br />
+#### Quickstart
 
 The quickest way to deploy this template on Platform.sh is by clicking the button below. This will automatically create a new project and initialize the repository for you.
 
@@ -105,14 +104,14 @@ The quickest way to deploy this template on Platform.sh is by clicking the butto
 >
 > If you do not already have a Platform.sh account, you will be asked to fill out some basic information, after which you will be given a 30-day free trial to experiment with our platform.
 
+#### Deployment options
+
+<details>
+<summary>Deploy directly to Platform.sh from the command line</summary><br />
 </details>
 
 <details>
-<summary><strong>Deploy directly to Platform.sh from the command line</strong></summary><br />
-</details>
-
-<details>
-<summary><strong>Deploy from GitHub</strong></summary><br />
+<summary>Deploy from GitHub</summary><br />
 
 If you would instead to deploy this template from your own repository on GitHub, you can do so through the following steps.
 
