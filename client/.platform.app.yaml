@@ -1,6 +1,6 @@
 name: nextjs
 
-type: 'nodejs:14'
+type: 'nodejs:16'
 
 dependencies:
     nodejs:

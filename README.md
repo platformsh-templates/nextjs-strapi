@@ -1,22 +1,94 @@
-# Next.js + Strapi demo for Platform.sh
+<br />
+<p align="left">
+    <a href="https://platform.sh">
+        <img src="https://platform.sh/logos/redesign/Platformsh_logo_black.svg" width="150px">
+    </a>
+</p>
+<br /><br />
+<p align="center">
+    <a href="https://github.com/strapi/foodadvisor">
+        <img src="foodadvisor.png" alt="Logo" width="50%">
+    </a>
+</p>
+<h1 align="center">Deploying Foodadvisor (Next.js + Strapi) on Platform.sh</h1>
 
 <p align="center">
-<a href="https://console.platform.sh/projects/create-project?template=https://raw.githubusercontent.com/platformsh/template-builder/master/templates/nextjs-strapi/.platform.template.yaml&utm_content=nextjs-strapi&utm_source=github&utm_medium=button&utm_campaign=deploy_on_platform">
-    <img src="https://platform.sh/images/deploy/lg-blue.svg" alt="Deploy on Platform.sh" width="180px" />
-</a>
+    <strong>Contribute to the Platform.sh knowledge base, or check out our resources</strong>
+    <br />
+    <br />
+    <a href="https://community.platform.sh"><strong>Join our community</strong></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <a href="https://docs.platform.sh"><strong>Documentation</strong></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <a href="https://platform.sh/blog"><strong>Blog</strong></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <a href="https://github.com/platformsh-templates/nextjs-strapi/issues"><strong>Report a bug</strong></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <a href="https://github.com/platformsh-templates/nextjs-strapi/issues"><strong>Request a feature</strong></a>
+    <br /><br />
 </p>
 
-Lorem ipsum
+<p align="center">
+    <a href="https://github.com/platformsh-templates/metabase/issues">
+        <img src="https://img.shields.io/github/issues/platformsh-templates/nextjs-strapi.svg?style=flat-square&labelColor=f4f2f3&color=ffd9d9&label=Issues" alt="Open issues" />
+    </a>&nbsp&nbsp
+    <a href="https://github.com/platformsh-templates/pulls">
+        <img src="https://img.shields.io/github/issues-pr/platformsh-templates/nextjs-strapi.svg?style=flat-square&labelColor=f4f2f3&color=ffd9d9&label=Pull%20requests" alt="Open PRs" />
+    </a>&nbsp&nbsp
+    <a href="https://github.com/platformsh-templates/nextjs-strapi/blob/master/LICENSE">
+        <img src="https://img.shields.io/static/v1?label=License&message=MIT&style=flat-square&labelColor=f4f2f3&color=ffd9d9" alt="License" />
+    </a>&nbsp&nbsp
+    <br /><br /><br />
+    <a href="https://console.platform.sh/projects/create-project?template=https://raw.githubusercontent.com/platformsh/template-builder/master/templates/nextjs-strapi/.platform.template.yaml&utm_content=nextjs-strapi&utm_source=github&utm_medium=button&utm_campaign=deploy_on_platform">
+        <img src="https://platform.sh/images/deploy/lg-blue.svg" alt="Deploy on Platform.sh" width="175px" />
+    </a>
+</p>
+</p>
+
+<hr>
+<br />
+<h2 align="center"><strong>Contents</strong></h2>
+
+
+- [About this project](#about-this-project)
+  - [Features](#features) 
+- [Getting started](#-getting-started-)
+  - [Deploying](#deploying)
+  - [Post-install](#post-install)
+- [Customizations](#customizations)
+  - [Configuration](#configuration)
+  - [Builds and deploys](#builds-and-deploys)
+  - [Upstream modifications](#upstream-modifications)
+- [About Platform.sh](#about-platformsh)
+- [Usage](#usage)
+  - [Logs](#logs)
+  - [Local development](#local-development)
+  - [Updating](#updating)
+  <!-- - [Customization](#customization)
+  - [Performance](#performance) -->
+- [Migrating](#migrating)
+- [License](#license)
+- [Contact](#contact)
+- [Resources](#resources)
+- [Contributors](#contributors)
+
+<hr>
+
+## About this project
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut efficitur enim, ac congue ex. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec at nisl imperdiet, imperdiet orci nec, facilisis lacus. Nam euismod fringilla nisl, in pretium risus facilisis id. Proin ultricies consequat nunc at condimentum. Nullam rutrum, lectus quis hendrerit congue, nunc lectus tempus ligula, vel blandit diam metus et arcu. Curabitur nulla nisi, eleifend at justo ornare, euismod viverra dui. 
+
+Nulla luctus elit volutpat, lacinia arcu quis, blandit sem. Proin malesuada risus quis quam scelerisque, at faucibus turpis maximus. Ut id leo odio. Pellentesque lobortis eget quam eget imperdiet.
 
 ## Features
 
 ## Post-install
 
+This demo repository is set up to deploy both front and backend application containers to the production environment, and to initialize the database with files and data from the original Foodadvisor demo provided by Strapi. 
+
+To login to the Strapi Admin UI, you can use the credentials `admin@example.com/Admin1234` to start, after which you are free to update them at `https://api.GENERATED_URL/admin/me`.
+
 ## Customizations 
 
 ## Local development
 
-In all cases, it's important to develop on an isolated environment, and each of the options below assume the following starting point:
+In all cases, it's important to develop on an isolated environment - do not open SSH tunnels to your production environment when developing locally. Each of the options below assume the following starting point:
 
 ```bash
 platform get PROJECT_ID
@@ -26,9 +98,9 @@ platform environment:branch updates
 
 > **Note:**
 >
-> You will need to include the CLI flags `-p PROJECT_ID` and `-e ENVIRONMENT_ID` if you are not in the project directory or if the environment is associated with an existing pull request.
+> For many of the steps below, you may need to include the CLI flags `-p PROJECT_ID` and `-e ENVIRONMENT_ID` if you are not in the project directory or if the environment is associated with an existing pull request.
 
-### Strapi
+### Running the Strapi backend
 
 ```bash
 # Open a SSH tunnel to the environment's database.
@@ -48,9 +120,11 @@ yarn develop
 
 Strapi will then serve on `localhost:1337` using a live service on the isolated Platform.sh environment.
 
-### Next.js
+### Running the Next.js frontend
 
-1. Pulling data from Strapi on a Platform.sh environment:
+You have two options when running Next.js locally. You can connect to a Strapi instance on an active Platform.sh environment, or run Strapi locally in parallel and connect to that.
+
+1. **Option 1:** Connecting to Strapi on a Platform.sh environment:
 
     > **Requirements:**
     >
@@ -66,35 +140,14 @@ Strapi will then serve on `localhost:1337` using a live service on the isolated 
     PREVIEW_SECRET=$(platform ssh 'echo $PLATFORM_PROJECT-$PLATFORM_BRANCH' -A nextjs -q)
 
     # Output to .env.development.
-    printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env
+    printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env.local
 
     # Build and run the Next.js server.
-    cd client
     yarn --frozen-lockfile
     yarn dev
     ```
 
-    my notes:
-
-    ```bash
-    cd client
-
-    # Get the live backend Strapi url (note the 'id' attribute defined in .platform/routes.yaml).
-    BACKEND_URL=$(platform ssh 'echo $PLATFORM_ROUTES | base64 --decode' -p b3sqwzxrtdozm -e pr-3 -A nextjs -q | jq -r 'to_entries[] | select (.value.id == "api") | .key')
-
-    # Get the preview secret.
-    PREVIEW_SECRET=$(platform ssh 'echo $PLATFORM_PROJECT-$PLATFORM_BRANCH' -p b3sqwzxrtdozm -e pr-3 -A nextjs -q)
-
-    # Output to .env.development.
-    printf "NEXT_PUBLIC_API_URL="${BACKEND_URL:8:${#BACKEND_URL}-9}"\nPREVIEW_SECRET=$PREVIEW_SECRET\n" > .env.development
-
-    # Build and run the Next.js server.
-    cd client
-    yarn --frozen-lockfile
-    yarn dev
-    ```
-
-2. Pulling data from Strapi running locally:
+2. **Option 2:** Connecting to a locally running Strapi development server
 
     This demo assumes a locally running Strapi instance by default, so once you have followed the [steps above](#strapi) you will be able to start the Next.js development server normally.
 
