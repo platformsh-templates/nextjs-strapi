@@ -7,7 +7,7 @@
 <br /><br />
 <p align="center">
     <a href="https://github.com/strapi/foodadvisor">
-        <img src="foodadvisor.png" alt="Logo" width="50%">
+        <img src="foodadvisor.png">
     </a>
 </p>
 <h1 align="center">Deploying Foodadvisor (Next.js + Strapi) on Platform.sh</h1>
@@ -77,6 +77,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut efficitur enim
 Nulla luctus elit volutpat, lacinia arcu quis, blandit sem. Proin malesuada risus quis quam scelerisque, at faucibus turpis maximus. Ut id leo odio. Pellentesque lobortis eget quam eget imperdiet.
 
 ## Features
+
+- Strapi v4
+- Node.js 16
+- MySQL 8
+- Automatic TLS certificates
+- Multi-app configuration
+- Delayed SSG build (post deploy hook)
+- yarn-based build
 
 ## Post-install
 
@@ -161,3 +169,51 @@ You have two options when running Next.js locally. You can connect to a Strapi i
     Next.js will be served from `localhost:3000` pulling data from a local Strapi instance running at `localhost:1337`.
 
 
+## License
+
+This template uses the [Foodadvisor demo repository]() provided by Strapi.io as its base, which is licensed under the [MIT License](https://github.com/strapi/foodadvisor/blob/master/LICENSE).
+
+## Contact
+
+This template is maintained primarily by the Platform.sh Developer Relations team, and they will be notified of all issues and pull requests you open here.
+
+- **Community:** Share your question with the community, or see if it's already been asked on our [Community site](https://community.platform.sh).
+- **Slack:** If you haven't done so already, you can join Platform.sh's [public Slack](https://chat.platform.sh/) channels and ping the `@devrel_team` with any questions.
+
+## Resources
+
+- [Strapi.io](https://strapi.io)
+- [Strapi Documentation](https://docs.strapi.io/developer-docs/latest/getting-started/introduction.html)
+- [Strapi Foodadvisor Repository](https://github.com/strapi/foodadvisor)
+- [Node.js on Platform.sh](https://docs.platform.sh/languages/nodejs.html)
+
+## Contributing
+
+<h3 align="center">Help us keep top-notch templates!</h3>
+
+Every one of our templates is open source, and they're important resources for users trying to deploy to Platform.sh for the first time or better understand the platform. They act as getting started guides, but also contain a number of helpful tips and best practices when working with certain languages and frameworks. 
+
+See something that's wrong with this template that needs to be fixed? Something in the documentation unclear or missing? Let us know!
+
+<h4 align="center"><strong>How to contribute</strong></h4>
+<br />
+<p align="center">
+    <a href="#"><strong>Report a bug</strong></a><br />
+    <a href="#"><strong>Submit a feature request</strong></a><br />
+    <a href="#"><strong>Open a pull request</strong></a><br />
+</p>
+<br />
+<h4 align="center"><strong>Need help?</strong></h4>
+<br />
+<p align="center">
+    <a href="#"><strong>Ask the Platform.sh Community</strong></a><br />
+    <a href="#"><strong>Join us on Slack</strong></a><br />
+</p>
+<br /><br />
+<h3 align="center"><strong>Thanks to all of our amazing contributors!</strong></h3>
+
+<br/>
+
+![GitHub Contributors Image](https://contrib.rocks/image?repo=platformsh-templates/nextjs-strapi)
+
+<br />
