@@ -48,11 +48,7 @@
 ## Contents
 
 - [About this project](#about-this-project)
-- [Features](#features) 
 - [Getting started](#getting-started)
-  - [Deploy](#deploy)
-  - [Post-install](#post-install)
-  - [Local development](#local-development)
 - [Customizations](#customizations)
 - [License](#license)
 - [Contact](#contact)
@@ -65,7 +61,7 @@ This template demonstrates a multi-app deployment on Platform.sh, in this case, 
 
 Next.js is an open-source web framework written for Javascript, and Strapi is a Headless CMS framework written in Node.js.
 
-## Features
+### Features
 
 - Strapi v4
 - Node.js 16
