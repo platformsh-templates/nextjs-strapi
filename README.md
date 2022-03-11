@@ -96,6 +96,54 @@ The quickest way to deploy this template on Platform.sh is by clicking the butto
 
 <details>
 <summary>Deploy directly to Platform.sh from the command line</summary><br />
+
+1. Clone this repository:
+
+   ```bash
+   git clone https://github.com/platformsh-templates/nextjs-strapi
+   ```
+
+1. Create a free trial:
+
+   [Register for a 30 day free trial with Platform.sh](https://auth.api.platform.sh/register). When you have completed signup, select the **Create from scratch** project option. Give you project a name, and select a region where you would like it to be deployed. As for the *Production environment* option, make sure to match it to this repository's settings, or to what you have updated the default branch to locally.
+
+1. Install the Platform.sh CLI
+
+   #### Linux/OSX
+
+   ```bash
+   curl -sS https://platform.sh/cli/installer | php
+   ```
+
+   #### Windows
+
+   ```bash
+   curl -f https://platform.sh/cli/installer -o cli-installer.php
+   php cli-installer.php
+   ```
+
+   You can verify the installation by logging in (`platformsh login`) and listing your projects (`platform project:list`).
+
+1. Set the project remote
+
+   Find your `PROJECT_ID` by running the command `platform project:list` 
+
+   ```bash
+   +---------------+------------------------------------+------------------+---------------------------------+
+   | ID            | Title                              | Region           | Organization                    |
+   +---------------+------------------------------------+------------------+---------------------------------+
+   | PROJECT_ID    | Your Project Name                  | xx-5.platform.sh | your-username                   |
+   +---------------+------------------------------------+------------------+---------------------------------+
+   ```
+
+   Then from within your local copy, run the command `platform project:set-remote PROJECT_ID`.
+
+1. Push
+
+   ```bash
+   git push platform DEFAULT_BRANCH
+   ```
+
 </details>
 
 <details>
@@ -140,10 +188,94 @@ If you would instead to deploy this template from your own repository on GitHub,
 
 <details>
 <summary>Deploy from GitLab</summary><br />
+
+If you would instead to deploy this template from your own repository on GitLab, you can do so through the following steps.
+
+> **Note:**
+>
+> You can find the full [GitLab integration documentation here](https://docs.platform.sh/integrations/source/gitlab.html).
+
+1. Clone this repository:
+
+   ```bash
+   git clone https://github.com/platformsh-templates/nextjs-strapi
+   ```
+
+1. Create a free trial:
+
+   [Register for a 30 day free trial with Platform.sh](https://auth.api.platform.sh/register). When you have completed signup, select the **Create from scratch** project option. Give you project a name, and select a region where you would like it to be deployed. As for the *Production environment* option, make sure to match it to this repository's settings, or to what you have updated the default branch to locally.
+
+1. Install the Platform.sh CLI
+
+   #### Linux/OSX
+
+   ```bash
+   curl -sS https://platform.sh/cli/installer | php
+   ```
+
+   #### Windows
+
+   ```bash
+   curl -f https://platform.sh/cli/installer -o cli-installer.php
+   php cli-installer.php
+   ```
+
+   You can verify the installation by logging in (`platformsh login`) and listing your projects (`platform project:list`).
+
+1. Create the repository
+
+   Create a new repository on GitLab, set it as a new remote for your local copy, and push to the default branch. 
+
+1. Setup the integration:
+
+   Consult the [GitLab integration documentation](https://docs.platform.sh/integrations/source/gitlab.html#setup) to finish connecting a repository to a project on Platform.sh. You will need to create an Access token on GitLab to do so.
+
 </details>
 
 <details>
 <summary>Deploy from Bitbucket</summary><br />
+
+If you would instead to deploy this template from your own repository on Bitbucket, you can do so through the following steps.
+
+> **Note:**
+>
+> You can find the full [Bitbucket integration documentation here](https://docs.platform.sh/integrations/source/bitbuckethtml).
+
+1. Clone this repository:
+
+   ```bash
+   git clone https://github.com/platformsh-templates/nextjs-strapi
+   ```
+
+1. Create a free trial:
+
+   [Register for a 30 day free trial with Platform.sh](https://auth.api.platform.sh/register). When you have completed signup, select the **Create from scratch** project option. Give you project a name, and select a region where you would like it to be deployed. As for the *Production environment* option, make sure to match it to this repository's settings, or to what you have updated the default branch to locally.
+
+1. Install the Platform.sh CLI
+
+   #### Linux/OSX
+
+   ```bash
+   curl -sS https://platform.sh/cli/installer | php
+   ```
+
+   #### Windows
+
+   ```bash
+   curl -f https://platform.sh/cli/installer -o cli-installer.php
+   php cli-installer.php
+   ```
+
+   You can verify the installation by logging in (`platformsh login`) and listing your projects (`platform project:list`).
+
+1. Create the repository
+
+   Create a new repository on Bitbucket, set it as a new remote for your local copy, and push to the default branch. 
+
+1. Setup the integration:
+
+   Consult the [Bitbucket integration documentation](https://docs.platform.sh/integrations/source/bitbucket.html#setup) to finish connecting a repository to a project on Platform.sh. You will need to create an Access token on Bitbucket to do so.
+
 </details>
 
 ### Post-install
@@ -240,7 +372,7 @@ The following changes have been made relative to the [Strapi Foodadvisor officia
 <summary>Shared files</summary><br />
 
 - The upstream `README.md` was renamed, and this Platform.sh-specific README was committed in its place.
-- `.platform/services.yaml`, and `.platform/routes.yaml` files have been added. These provide Platform.sh-specific configuration for provisioning an Oracle MySQL container and for defining how traffic is handled between the two application containers, respectively. They are present in all projects on Platform.sh, and you may customize them as you see fit.
+- `.platform/services.yaml`, and `.platform/routes.yaml` files have been added. These provide Platform.sh-specific configuration for provisioning an Oracle MySQL container and for defining how traffic is handled between the two application containers, respectively. They are present in all projects on Platform.sh, and you may customize them as you see fit. Consult those files for more information, or take a look at the [Routes](https://docs.platform.sh/configuration/routes.html) and [Services](https://docs.platform.sh/configuration/services.html) documentation for details about configuration. 
 
 </details>
 
@@ -250,7 +382,7 @@ The following changes have been made relative to the [Strapi Foodadvisor officia
 - `http:/*` was added to `.gitignore`, as this directory was sometimes generated during local development.
 - The `mysql` dependency was added, so as to connect to the database service on Platform.sh.
 - A zipped file (`api/foodadvisor.tar.gz`) was added, which contains a database dump and a collection of demo images used in the original Foodadvisor demo, altered to work with Oracle MySQL. It is used on the first deployment within the Strapi deploy hook to set up the database. You are free to delete this file after this demo has been deployed.
-- A `api/.platform.app.yaml` file has been added, which is required to define the build and deploy process for all application containers on Platform.sh. It is set to run Strapi if production mode across all environments, so you will need to clone the repository (`platform get PROJECT_ID`) local and run a development server in order to add new collections.
+- A `api/.platform.app.yaml` file has been added, which is required to define the build and deploy process for all application containers on Platform.sh. It is set to run Strapi if production mode across all environments, so you will need to clone the repository (`platform get PROJECT_ID`) local and run a development server in order to add new collections. Take a look at the [Application](https://docs.platform.sh/configuration/services.html) documentation for more details about configuration.
 - A `api/config/database.js` file has been added, which does two things. First, it reads from Platform.sh environment variables to detect the database service connected to the `database` relationship in `api/.platform.app.yaml`. In this case, that's Oracle MySQL, and it uses credentials provided in the `PLATFORM_RELATIONSHIPS` environment variable to connect to that service. Second, it detects whether or not Strapi is actually running on Platform.sh, and makes accomodations to run Strapi locally depending on if an SSH tunnel has been opened to a database running on an active Platform.sh environment. 
 - A `.environment` file has been added. This file is sourced on a Platform.sh environment during startup, at the beginning of the deploy hook, and whenever you SSH into the environment (`platform ssh -e ENVIRONMENT_ID`). It initializes environment variables specific to this demo, such as Strapi security tokens, relevant Next.js frontend URLs, and defines database credential aliases used during the deploy hook. 
 - There is an [open issue](https://github.com/strapi/strapi/issues/12101) where Strapi rejects collections with names that are too long, so the demo has been altered slightly (the collection `name` within `api/src/components/blocks/related-restaurants.json` has been shortened) for this demo repo.
@@ -261,7 +393,7 @@ The following changes have been made relative to the [Strapi Foodadvisor officia
 <summary>Next.js customizations (<code>client</code>)</summary><br />
 
 - A `.environment` file has been added. This file is sourced on a Platform.sh environment during startup, at the beginning of the deploy hook, and whenever you SSH into the environment (`platform ssh -e ENVIRONMENT_ID`). It initializes environment variables specific to this demo, specifically the backend Strapi url for the current environment. You will need to replicate these commands to run Next.js locally, so see the [Local development](#local-development) section for more details. 
-- A `client/.platform.app.yaml` file has been added, which is required to define the build and deploy process for all application containers on Platform.sh. Because of how Platform.sh works, the Next.js build is delayed considerably to the `post_deploy` hook after the Strapi container has fully deployed and has begun serving its endpoints. 
+- A `client/.platform.app.yaml` file has been added, which is required to define the build and deploy process for all application containers on Platform.sh. Because of how Platform.sh works, the Next.js build is delayed considerably to the `post_deploy` hook after the Strapi container has fully deployed and has begun serving its endpoints. Take a look at the [Application](https://docs.platform.sh/configuration/services.html) documentation for more details about configuration.
 
 </details>
 
@@ -315,8 +447,8 @@ See something that's wrong with this template that needs to be fixed? Something 
 <br />
 
 @todo
-- update user name in tar.gz file from Node Workshop
-- template.yaml file
+- update user name in tar.gz file from Node Workshop --> Platform.sh Templates
 - plugins?
 - GitLab
 - BitBucket
+- Trailing question mark on title? Dump error?
