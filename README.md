@@ -7,10 +7,11 @@
 <br /><br />
 <p align="center">
     <a href="https://github.com/strapi/foodadvisor">
-        <img src="foodadvisor.png">
+        <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d2ecfe9f-fa41-4caa-98e6-1354850c39d1/Logo.WhiteBackground.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220311%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220311T182042Z&X-Amz-Expires=86400&X-Amz-Signature=7304a7f6d04754b75ce437049b853bc5abd05998fd17e4f2d1a2bd36d32840b4&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Logo.WhiteBackground.png%22&x-id=GetObject" width="300">
     </a>
 </p>
-<h1 align="center">Deploying Foodadvisor (Next.js + Strapi) on Platform.sh</h1>
+<br /><br />
+<h1 align="center">Deploying Next.js + Strapi on Platform.sh</h1>
 
 <p align="center">
     <strong>Contribute to the Platform.sh knowledge base, or check out our resources</strong>
