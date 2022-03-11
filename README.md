@@ -48,21 +48,11 @@
 
 - [About this project](#about-this-project)
 - [Features](#features) 
-- [Getting started](#-getting-started-)
-  - [Deploying](#deploying)
+- [Getting started](#getting-started)
+  - [Deploy](#deploy)
   - [Post-install](#post-install)
-- [Customizations](#customizations)
-  - [Configuration](#configuration)
-  - [Builds and deploys](#builds-and-deploys)
-  - [Upstream modifications](#upstream-modifications)
-- [About Platform.sh](#about-platformsh)
-- [Usage](#usage)
-  - [Logs](#logs)
   - [Local development](#local-development)
-  - [Updating](#updating)
-  <!-- - [Customization](#customization)
-  - [Performance](#performance) -->
-- [Migrating](#migrating)
+- [Customizations](#customizations)
 - [License](#license)
 - [Contact](#contact)
 - [Resources](#resources)
@@ -72,9 +62,9 @@
 
 ## About this project
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut efficitur enim, ac congue ex. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec at nisl imperdiet, imperdiet orci nec, facilisis lacus. Nam euismod fringilla nisl, in pretium risus facilisis id. Proin ultricies consequat nunc at condimentum. Nullam rutrum, lectus quis hendrerit congue, nunc lectus tempus ligula, vel blandit diam metus et arcu. Curabitur nulla nisi, eleifend at justo ornare, euismod viverra dui. 
+This template demonstrates a multi-app deployment on Platform.sh, in this case, a Next.js frontend consuming data from a Strapi backend running on the same environment. It is based on Strapi's official demo repository, [Foodadvisor](https://github.com/strapi/foodadvisor), and is identical to that project aside from a few small modification needed to deploy on Platform.sh. 
 
-Nulla luctus elit volutpat, lacinia arcu quis, blandit sem. Proin malesuada risus quis quam scelerisque, at faucibus turpis maximus. Ut id leo odio. Pellentesque lobortis eget quam eget imperdiet.
+Next.js is an open-source web framework written for Javascript, and Strapi is a Headless CMS framework written in Node.js.
 
 ## Features
 
@@ -253,7 +243,6 @@ The following changes have been made relative to the [Strapi Foodadvisor officia
 - The upstream `README.md` was renamed, and this Platform.sh-specific README was committed in its place.
 - `.platform/services.yaml`, and `.platform/routes.yaml` files have been added. These provide Platform.sh-specific configuration for provisioning an Oracle MySQL container and for defining how traffic is handled between the two application containers, respectively. They are present in all projects on Platform.sh, and you may customize them as you see fit.
 
-
 ### Strapi customizations (`api`)
 
 - `http:/*` was added to `.gitignore`, as this directory was sometimes generated during local development.
@@ -298,16 +287,16 @@ See something that's wrong with this template that needs to be fixed? Something 
 <h4 align="center"><strong>How to contribute</strong></h4>
 <br />
 <p align="center">
-    <a href="#"><strong>Report a bug</strong></a><br />
-    <a href="#"><strong>Submit a feature request</strong></a><br />
-    <a href="#"><strong>Open a pull request</strong></a><br />
+    <a href="https://github.com/platformsh-templates/nextjs-strapi/issues"><strong>Report a bug</strong></a><br />
+    <a href="https://github.com/platformsh-templates/nextjs-strapi/issues"><strong>Submit a feature request</strong></a><br />
+    <a href="https://github.com/platformsh-templates/nextjs-strapi/pulls"><strong>Open a pull request</strong></a><br />
 </p>
 <br />
 <h4 align="center"><strong>Need help?</strong></h4>
 <br />
 <p align="center">
-    <a href="#"><strong>Ask the Platform.sh Community</strong></a><br />
-    <a href="#"><strong>Join us on Slack</strong></a><br />
+    <a href="https://community.platform.sh"><strong>Ask the Platform.sh Community</strong></a><br />
+    <a href="https://chat.platform.sh"><strong>Join us on Slack</strong></a><br />
 </p>
 <br /><br />
 <h3 align="center"><strong>Thanks to all of our amazing contributors!</strong></h3>
@@ -320,7 +309,5 @@ See something that's wrong with this template that needs to be fixed? Something 
 
 @todo
 - update user name in tar.gz file from Node Workshop
-- description/about this project
 - template.yaml file
-- toc
 - plugins?
