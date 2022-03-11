@@ -53,7 +53,7 @@
 - [License](#license)
 - [Contact](#contact)
 - [Resources](#resources)
-- [Contributors](#contributors)
+- [Contributing](#contributing)
 
 ## About this project
 
