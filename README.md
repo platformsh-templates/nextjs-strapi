@@ -1,9 +1,9 @@
-
-<p align="right">
-    <a href="https://platform.sh">
-        <img src="https://platform.sh/logos/redesign/Platformsh_logo_black.svg" width="150px">
-    </a>
-</p>
+> [!WARNING]
+> **This repository is no longer maintained by our internal teams.**  
+> The template is provided *as is* and will not receive updates, bug fixes, or new features.  
+> You are welcome to contribute on it or fork the repository and modify it for your own use.
+> To deploy this template on [Upsun](https://www.upsun.com), you can use the command [upsun project:convert](https://docs.upsun.com/administration/cli/reference.html#projectconvert)
+> on this codebase to convert the existing `.platform.app.yaml` configuration file to the [Upsun Flex format](https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html).
 
 <p align="center">
     <a href="https://github.com/strapi/foodadvisor">
@@ -34,12 +34,7 @@
     </a>&nbsp&nbsp
     <a href="https://github.com/platformsh-templates/nextjs-strapi/blob/master/LICENSE">
         <img src="https://img.shields.io/static/v1?label=License&message=MIT&style=flat-square&labelColor=f4f2f3&color=ffd9d9" alt="License" />
-    </a>&nbsp&nbsp
-    <br /><br /><br />
-    <a href="https://console.platform.sh/projects/create-project?template=https://raw.githubusercontent.com/platformsh/template-builder/nextjs-strapi/templates/nextjs-strapi/.platform.template.yaml&utm_content=nextjs-strapi&utm_source=github&utm_medium=button&utm_campaign=deploy_on_platform">
-        <img src="https://platform.sh/images/deploy/lg-blue.svg" alt="Deploy on Platform.sh" width="175px" />
     </a>
-</p>
 </p>
 
 <hr>
@@ -76,14 +71,6 @@ Next.js is an open-source web framework written for Javascript, and Strapi is a 
 ### Deploy
 
 #### Quickstart
-
-The quickest way to deploy this template on Platform.sh is by clicking the button below. This will automatically create a new project and initialize the repository for you.
-
-<p align="center">
-    <a href="https://console.platform.sh/projects/create-project?template=https://raw.githubusercontent.com/platformsh/template-builder/master/templates/nextjs-strapi/.platform.template.yaml&utm_content=nextjs-strapi&utm_source=github&utm_medium=button&utm_campaign=deploy_on_platform">
-        <img src="https://platform.sh/images/deploy/lg-blue.svg" alt="Deploy on Platform.sh" width="170px" />
-    </a>
-</p>
 
 > **Note:**
 >
@@ -406,7 +393,7 @@ This template uses the [Foodadvisor demo repository]() provided by Strapi.io as 
 This template is maintained primarily by the Platform.sh Developer Relations team, and they will be notified of all issues and pull requests you open here.
 
 - **Community:** Share your question with the community, or see if it's already been asked on our [Community site](https://community.platform.sh).
-- **Slack:** If you haven't done so already, you can join Platform.sh's [public Slack](https://chat.platform.sh/) channels and ping the `@devrel_team` with any questions.
+- **Discord:** If you haven't done so already, you can join Platform.sh's [public Discord](https://discord.gg/upsun) channels and ping the `@devrel_team` with any questions.
 
 ## Resources
 
@@ -435,7 +422,7 @@ See something that's wrong with this template that needs to be fixed? Something 
 <br />
 <p align="center">
     <a href="https://community.platform.sh"><strong>Ask the Platform.sh Community</strong></a><br />
-    <a href="https://chat.platform.sh"><strong>Join us on Slack</strong></a><br />
+    <a href="https://discord.gg/upsun"><strong>Join us on Discord</strong></a><br />
 </p>
 <br /><br />
 <h3 align="center"><strong>Thanks to all of our amazing contributors!</strong></h3>
